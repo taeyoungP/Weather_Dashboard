@@ -12,27 +12,29 @@
 </head>
 
 <body>
-    <div class="col-12 col-md-3 p-3">
+    <div id="title">
         <h1>Weather Dashboard</h1>
     </div>
 
     <div
-        class="flex-row align-start align-stretch-md align-content-start align-content-stretch-md min-100-vh bg-primary">
-        <div class="col-12 col-md-3 bg-light p-3">
-            <h1 class="text-primary">Search for City: </h1>
+        class="flex-row align-start align-stretch-md align-content-start align-content-stretch-md min-100-vh bg-white">
+        <div class="col-12 col-md-3 bg-white p-3">
+            <h1 class="text-primary">Search for a City: </h1>
             <form id="search-form" class="mb-2">
-                <input id="search-input" class="form-input w-100" type="text" placeholder="Search">
-                <button class="btn btn-info btn-block" type="submit">Search</button>
+                <input id="search-input" class="form-input w-100" type="text" placeholder="San Diego">
+                <button class="btn btn-info btn-block bg-lightBlue" type="submit">Search</button>
             </form>
             <!-- Add search history below submit form -->
+            <div id="division"></div>
             <div>
                 <ul id="search-history"></ul>
             </div>
         </div>
 
-        <div class="col-12 col-md-9 p-3 text-light" id="weatherDisplay">
-            <h2><span id="result-output"></span></h2> <!-- For current weather -->
-            <div id="result-content"></div> <!-- For 5 Day forecast -->
+        <div class="col-12 col-md-9 p-3 text-black" id="weatherDisplay">
+            <div id="result-output"></div> <!-- For current weather -->
+            <div id="result-content">
+            </div> <!-- For 5 Day forecast -->
         </div>
     </div>
 
