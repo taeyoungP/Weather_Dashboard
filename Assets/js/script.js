@@ -7,7 +7,7 @@ var fiveForecastEl = document.querySelector('#five-forecast');
 var searchHistorys = [];
 
 function displayDate(date) {
-  var tempDate = date.split(' ')[0];
+  var tempDate = date.split('T')[0];
   var tempDate = tempDate.split('-'); //[year, month, date]
   var todayDate = tempDate[1] + "/" + tempDate[2] + "/" + tempDate[0];
   return todayDate;
@@ -16,8 +16,10 @@ function displayDate(date) {
 //Weather API key: f7ba19852d9be6bf54931fa12322d8df
 function printResults(weatherData, i) {
   //temp wind humidity
-  var todayTime = weatherData.list[i].dt_txt;
+  var day = new Date(weatherData.list[i].dt*1000+(weatherData.city.timezone*1000));
+  var todayTime = day.toISOString();
   var todayDate = displayDate(todayTime);
+
   var date = document.createElement('li');
   date.textContent = todayDate;
 
@@ -54,7 +56,7 @@ function printResults(weatherData, i) {
 
 function searchApi(city) {
   var queryUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city
-    + "&cnt=6&units=imperial&appid=f7ba19852d9be6bf54931fa12322d8df";
+    + "&units=imperial&appid=f7ba19852d9be6bf54931fa12322d8df";
 
   console.log(queryUrl);
 
@@ -69,16 +71,18 @@ function searchApi(city) {
       return response.json();
     })
     .then(function (data) {
+
       resultOutputEl.innerHTML="";
 
-      var todayTime = data.list[0].dt_txt;
+      //var todayTime = data.list[0].dt_txt;
+      //https://stackoverflow.com/questions/62376115/how-to-obtain-open-weather-api-date-time-from-city-being-fetched
+      //https://stackoverflow.com/questions/65746475/how-to-get-data-info-from-openweathermap-api-dt
+      var day = new Date(data.list[0].dt*1000+(data.city.timezone*1000));
+      var todayTime = day.toISOString();
       var todayDate = displayDate(todayTime);
-      
 
       console.log(data);
-      
       //add first weather info here then rest of them goes to loop
-      //////////////////////TODO: need to nicely format to looks nicer to read...
       var weatherHead = document.createElement("ul");
       weatherHead.setAttribute("id", "weatherHead")
 
@@ -91,7 +95,6 @@ function searchApi(city) {
       var iconUrl = "http://openweathermap.org/img/w/" + data.list[0].weather[0].icon + ".png";
       weatherIconImg.setAttribute("src", iconUrl);
       weatherIconImg.setAttribute("id", "IconImg");
-
 
       cityDate.textContent = data.city.name + " (" + todayDate + ")";
       temp.textContent = "Temp: " + data.list[0].main.temp + " ℉";
@@ -113,8 +116,13 @@ function searchApi(city) {
 
 
       resultContentEl.innerHTML = "";
-      resultContentEl.textContent = "5-Day Forecast: ";
-      for (var i = 1; i < data.list.length; i++) { //since current weather printed out separately, var i loop from 1 to 6 (5 day forecast)
+      fiveForecastEl.innerHTML = "";
+      fiveForecastEl.textContent = "5-Day Forecast: ";
+      //resultContentEl.textContent = "5-Day Forecast: ";
+
+      //First data index[0] already has been displayed, and data list length is total 40.
+      //Therefore, increment by 8, thus starting i from 7(as index starts from 0)*
+      for (var i = 7; i < data.list.length; i+=8) { 
         printResults(data, i);
       }
 
@@ -156,6 +164,13 @@ function storeHistory() {
   localStorage.setItem("history", JSON.stringify(searchHistorys));
 }
 
+// https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city //
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 function handleSearchFormSubmit(event) {
   event.preventDefault();
 
@@ -166,8 +181,7 @@ function handleSearchFormSubmit(event) {
     return;
   }
 
-  searchHistorys.push(searchCity);
-
+  searchHistorys.push(toTitleCase(searchCity));
   searchApi(searchCity);
 
   storeHistory();
