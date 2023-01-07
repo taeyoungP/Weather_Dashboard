@@ -6,10 +6,8 @@ var fiveForecastEl = document.querySelector('#five-forecast');
 
 var searchHistorys = [];
 
-function displayDate(date) {
-  var tempDate = date.split('T')[0];
-  var tempDate = tempDate.split('-'); //[year, month, date]
-  var todayDate = tempDate[1] + "/" + tempDate[2] + "/" + tempDate[0];
+function displayDate(day) {
+  var todayDate = day.getMonth()+1 + "/" + day.getDate() + "/" + day.getFullYear();
   return todayDate;
 }
 
@@ -17,8 +15,7 @@ function displayDate(date) {
 function printResults(weatherData, i) {
   //temp wind humidity
   var day = new Date(weatherData.list[i].dt*1000+(weatherData.city.timezone*1000));
-  var todayTime = day.toISOString();
-  var todayDate = displayDate(todayTime);
+  var todayDate = displayDate(day);
 
   var date = document.createElement('li');
   date.textContent = todayDate;
@@ -85,9 +82,10 @@ function searchApi(city) {
       //var todayTime = data.list[0].dt_txt;
       //https://stackoverflow.com/questions/62376115/how-to-obtain-open-weather-api-date-time-from-city-being-fetched
       //https://stackoverflow.com/questions/65746475/how-to-get-data-info-from-openweathermap-api-dt
+      //https://www.w3schools.com/jsref/jsref_getmonth.asp
       var day = new Date(data.list[0].dt*1000+(data.city.timezone*1000));
-      var todayTime = day.toISOString();
-      var todayDate = displayDate(todayTime);
+      var todayDate = displayDate(day);
+      //var todayDate = day.getMonth()+1 + "/" + day.getDate() + "/" + day.getFullYear();
 
       console.log(data);
       //add first weather info here then rest of them goes to loop
@@ -142,7 +140,7 @@ function searchApi(city) {
 
 function renderHistory() {
   searchHistoryEl.innerHTML = "";
-  for (var i = searchHistorys.length - 1; i >= 0; i--) {
+  for (var i = searchHistorys.length - 1; i >= 0; i--) { //loop thru backwards so most recent history shows on the top
     var searchedItem = document.createElement("li");
     var searchedCity = searchHistorys[i];
     searchedItem.textContent = searchedCity;
@@ -189,8 +187,20 @@ function handleSearchFormSubmit(event) {
     return;
   }
 
-  searchHistorys.push(toTitleCase(searchCity));
+  var city = toTitleCase(searchCity);
+
+  //Check if arrayList arleady has city, if yes, move searched city to the end
+  if(searchHistorys.includes(city)){
+    //https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
+    searchHistorys.push(searchHistorys.splice(searchHistorys.indexOf(city), 1)[0]);
+    //console.log("city already exist in history");
+  }else {
+    searchHistorys.push(city);
+  }
+  
   searchApi(searchCity);
+
+  document.querySelector('.form-input').value = '';
 
   storeHistory();
   renderHistory();

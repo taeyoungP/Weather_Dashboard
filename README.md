@@ -1,14 +1,12 @@
-# 06 Server-Side APIs: Weather Dashboard
+# Weather Dashboard
 
-## Your Task
+## Task for Weather Dashboard
 
-Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
+Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Developers are often tasked with retrieving data from another application's API and using it in the context of their own. This challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
 
-Use the [5 Day Weather Forecast](https://openweathermap.org/forecast5) to retrieve weather data for cities. The base URL should look like the following: `https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}`. After registering for a new API key, you may need to wait up to 2 hours for that API key to activate.
+In this task, the [5 Day Weather Forecast](https://openweathermap.org/forecast5) is used to retrieve weather data for cities. The base URL should look like the following: `https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}`. After registering for a new API key, may need to wait up to 2 hours for that API key to activate.
 
-**Hint**: Using the 5 Day Weather Forecast API, you'll notice that you will need to pass in coordinates instead of just a city name. Using the OpenWeatherMap APIs, how could we retrieve geographical coordinates given a city name?
-
-You will use `localStorage` to store any persistent data. For more information on how to work with the OpenWeather API, refer to the [Full-Stack Blog on how to use API keys](https://coding-boot-camp.github.io/full-stack/apis/how-to-use-api-keys).
+`localStorage` will be used to store any persistent data. For more information on how to work with the OpenWeather API, refer to the [Full-Stack Blog on how to use API keys](https://coding-boot-camp.github.io/full-stack/apis/how-to-use-api-keys).
 
 ## User Story
 
@@ -38,65 +36,53 @@ The following image shows the web application's appearance and functionality:
 
 ![The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](./Assets/06-server-side-apis-homework-demo.png)
 
-## Grading Requirements
+## Description
 
-> **Note**: If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
+* A link to deployed application: https://taeyoungp.github.io/Weather_Dashboard/
 
-This Challenge is graded based on the following criteria: 
+The following images demonstrate the application functionality:
+![Webpage shows blank weather dashboard.](./Assets/images/weather_dashboard0.png)
 
-### Technical Acceptance Criteria: 40%
+When user opens up the page, user can see search bar on the left side of the page. User can input city's name in the search bar to get info of that city's weather forecast. (Today's and future 5 days' weathers)
 
-* Satisfies all of the above acceptance criteria plus the following:
+![Displaying weather of the searched city and searched city shows up on left side of page.](./Assets/images/weather_dashboard1.png)
 
-    * Uses the OpenWeather API to retrieve weather data.
+After user searching city, its weather data will display on the page, including city name, date, weather icon, temperature, wind speed, and humidity. 
 
-    * Uses `localStorage` to store persistent data.
+Also under the search bar, the list of searched city histories will be displayed. User can click these histories to search the weather forecast of the city again.
 
-### Deployment: 32%
+(Note: Most recently searched city name will be displayed at the top of history list and older ones to the bottom. However, when the user clicks searched city name from history list, the order of list remains same.)
 
-* Application deployed at live URL.
+![Deleting searched history.](./Assets/images/delete_history.png)
 
-* Application loads with no errors.
+User can also delete their searched city history by clicking 'X' button next searched city name. 
 
-* Application GitHub URL submitted.
+![Webpage shows no result has been found.](./Assets/images/no_result.png)
 
-* GitHub repository that contains application code.
+If the user searched for invalid city name, or if the weather api could not fetch the weather data, the page wiil says 'No result found, search again!' 
 
-### Application Quality: 15%
+(Note: Invalid city name will still be added to searched history, thus user needs to delete the history manually if they desire.)
 
-* Application user experience is intuitive and easy to navigate.
 
-* Application user interface style is clean and polished.
+## How to use
 
-* Application resembles the mock-up functionality provided in the Challenge instructions.
+ * User can check today's date and 5 days forecast by seraching city name from search bar on the left side of the webpage. Search function is not uppercase/lowercase sensitive, but user must input correct and precise city name. 
 
-### Repository Quality: 13%
+ * Date shown in weather forecast is based on city's local timezone.  
 
-* Repository has a unique name.
+ * Searched history will appear under search bar section. This list of histories will be saved in webpage. User can also delete history of each searched cities by clicking 'X' sign next to searched city. 
 
-* Repository follows best practices for file structure and naming conventions.
+ * User can research city by clicking searched city history displayed under search bar.  
 
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
+## Credits
+ 
+> * Converting date data to different formats: https://stackoverflow.com/questions/62376115/how-to-obtain-open-weather-api-date-time-from-city-being-fetched, https://stackoverflow.com/questions/65746475/how-to-get-data-info-from-openweathermap-api-dt, https://www.w3schools.com/jsref/jsref_getmonth.asp
 
-* Repository contains multiple descriptive commit messages.
+> * Code to make first letter of word always an uppercase and rest of them lower case: https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
 
-* Repository contains quality readme file with description, screenshot, and link to deployed application.
+> * Code to move item in the array to end of the list: https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
 
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a readme describing the project.
+> * API used in this project (OpenWeatherMAp): https://openweathermap.org/forecast5
 
 - - -
 © 2022 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
