@@ -36,7 +36,7 @@ function printResults(weatherData, i) {
   wind.textContent = "Wind: " + weatherData.list[i].wind.speed + " MPH";
   humidity.textContent = "Humidity: " + weatherData.list[i].main.humidity + " %";
 
-  date.setAttribute("class", "weatherInfo");
+  date.setAttribute("class", "weatherInfo date");
   temp.setAttribute("class", "weatherInfo");
   wind.setAttribute("class", "weatherInfo");
   humidity.setAttribute("class", "weatherInfo");
@@ -44,7 +44,6 @@ function printResults(weatherData, i) {
   var iconUrl = "http://openweathermap.org/img/w/" + weatherData.list[i].weather[0].icon + ".png";
   weatherIconImg.setAttribute("src", iconUrl);
   weatherIcon.appendChild(weatherIconImg);
-  //TODO add Atrributes to list items and make them listed column direction
 
   forecast.appendChild(date);
   forecast.appendChild(weatherIcon); //Icon
@@ -55,6 +54,10 @@ function printResults(weatherData, i) {
 }
 
 function searchApi(city) {
+  resultOutputEl.innerHTML = "";
+  fiveForecastEl.innerHTML = "";
+  resultContentEl.innerHTML = "";
+
   var queryUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city
     + "&units=imperial&appid=f7ba19852d9be6bf54931fa12322d8df";
 
@@ -65,6 +68,11 @@ function searchApi(city) {
       if (!response.ok) {
         console.log('No results found!');
         resultContentEl.innerHTML = '<h3>No results found, search again!</h3>';
+        
+        //searchHistorys.pop();
+        //storeHistory();
+        //renderHistory();
+
         throw response.json();
       }
 
@@ -72,7 +80,7 @@ function searchApi(city) {
     })
     .then(function (data) {
 
-      resultOutputEl.innerHTML="";
+      //resultOutputEl.innerHTML="";
 
       //var todayTime = data.list[0].dt_txt;
       //https://stackoverflow.com/questions/62376115/how-to-obtain-open-weather-api-date-time-from-city-being-fetched
@@ -115,8 +123,8 @@ function searchApi(city) {
       resultOutputEl.appendChild(weatherHead);
 
 
-      resultContentEl.innerHTML = "";
-      fiveForecastEl.innerHTML = "";
+      //resultContentEl.innerHTML = "";
+      //fiveForecastEl.innerHTML = "";
       fiveForecastEl.textContent = "5-Day Forecast: ";
       //resultContentEl.textContent = "5-Day Forecast: ";
 
@@ -210,17 +218,3 @@ searchHistoryEl.addEventListener("click", function (event) {
 
 searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 init();
-
-///TODO
-///Make local storage for array list of searched city names and display below
-// the search for City form (set and get local storage***)
-//(maybe set each attribute data="cityname"?)
-//****Make sure to make conditional statement to check if the list is empty or not */
-/* Also check if the item already exist in the list
-Maybe I delete again and append to the end of the arraylist
-then prints out history array list backwward.. so it will appear on the top of
-button lists.... */
-
-// When displaying, make each of list items to button
-//Add click event on button and when clicked, get that city name
-//and call searchApi function
