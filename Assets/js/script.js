@@ -6,12 +6,14 @@ var fiveForecastEl = document.querySelector('#five-forecast');
 
 var searchHistorys = [];
 
+//Display date
 function displayDate(day) {
   var todayDate = day.getMonth()+1 + "/" + day.getDate() + "/" + day.getFullYear();
   return todayDate;
 }
 
 //Weather API key: f7ba19852d9be6bf54931fa12322d8df
+//Print 5 day forecast
 function printResults(weatherData, i) {
   //temp wind humidity
   var day = new Date(weatherData.list[i].dt*1000+(weatherData.city.timezone*1000));
@@ -50,8 +52,9 @@ function printResults(weatherData, i) {
   resultContentEl.append(forecast);
 }
 
+//Fetch openweathermap api and display today's weather
 function searchApi(city) {
-  resultOutputEl.innerHTML = "";
+  resultOutputEl.innerHTML = ""; //empty all elements' inner contents before putting new weather info
   fiveForecastEl.innerHTML = "";
   resultContentEl.innerHTML = "";
 
@@ -66,26 +69,19 @@ function searchApi(city) {
         console.log('No results found!');
         resultContentEl.innerHTML = '<h3>No results found, search again!</h3>';
         
-        //searchHistorys.pop();
-        //storeHistory();
-        //renderHistory();
-
-        throw response.json();
+        //throw response.json();
+        throw new Error("The data is not available"); //of response not okay, throw error msg
       }
-
       return response.json();
     })
     .then(function (data) {
-
-      //resultOutputEl.innerHTML="";
-
-      //var todayTime = data.list[0].dt_txt;
+      //Get date from date data
       //https://stackoverflow.com/questions/62376115/how-to-obtain-open-weather-api-date-time-from-city-being-fetched
       //https://stackoverflow.com/questions/65746475/how-to-get-data-info-from-openweathermap-api-dt
       //https://www.w3schools.com/jsref/jsref_getmonth.asp
       var day = new Date(data.list[0].dt*1000+(data.city.timezone*1000));
       var todayDate = displayDate(day);
-      //var todayDate = day.getMonth()+1 + "/" + day.getDate() + "/" + day.getFullYear();
+      console.log(day);
 
       console.log(data);
       //add first weather info here then rest of them goes to loop
@@ -106,6 +102,7 @@ function searchApi(city) {
       temp.textContent = "Temp: " + data.list[0].main.temp + " ℉";
       wind.textContent = "Wind: " + data.list[0].wind.speed + " MPH";
       humidity.textContent = "Humidity: " + data.list[0].main.humidity + " %";
+
       cityDate.setAttribute("id", "cityDate");
       cityDate.setAttribute("style", "")
       temp.setAttribute("class", "weatherInfo");
@@ -120,21 +117,17 @@ function searchApi(city) {
       weatherHead.appendChild(humidity);
       resultOutputEl.appendChild(weatherHead);
 
-
-      //resultContentEl.innerHTML = "";
-      //fiveForecastEl.innerHTML = "";
       fiveForecastEl.textContent = "5-Day Forecast: ";
-      //resultContentEl.textContent = "5-Day Forecast: ";
-
-      //First data index[0] already has been displayed, and data list length is total 40.
-      //Therefore, increment by 8, thus starting i from 7(as index starts from 0)*
-      for (var i = 7; i < data.list.length; i+=8) { 
+    
+      //First data index[0] already has been displayed and there are total 40 weathers in data list
+      //Because of timezone difference from different locations, increment by 7 to grab mid day weather info for 5 day forecast
+      for (var i = 8; i < data.list.length; i+=7) { 
         printResults(data, i);
       }
 
     })
     .catch(function (error) {
-      console.error(error);
+      console.error(error); //catch error msg and log it
     });
 }
 
@@ -170,7 +163,8 @@ function storeHistory() {
   localStorage.setItem("history", JSON.stringify(searchHistorys));
 }
 
-// https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city //
+// Make first letter of the word Uppercase and rest of them as lowercase
+// Used code from: https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city //
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, function(txt){
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -189,7 +183,7 @@ function handleSearchFormSubmit(event) {
 
   var city = toTitleCase(searchCity);
 
-  //Check if arrayList arleady has city, if yes, move searched city to the end
+  //Check if arrayList arleady has city. If yes, move searched city to the end of the array, else push new city name
   if(searchHistorys.includes(city)){
     //https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
     searchHistorys.push(searchHistorys.splice(searchHistorys.indexOf(city), 1)[0]);
@@ -206,6 +200,7 @@ function handleSearchFormSubmit(event) {
   renderHistory();
 }
 
+//Delete history button 
 searchHistoryEl.addEventListener("click", function (event) {
   var element = event.target;
   if (element.matches(".delete")) {
@@ -217,6 +212,7 @@ searchHistoryEl.addEventListener("click", function (event) {
   }
 })
 
+//Search city from the history list
 searchHistoryEl.addEventListener("click", function (event) {
   var element = event.target;
   console.log(element.id);

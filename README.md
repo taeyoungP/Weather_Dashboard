@@ -43,7 +43,7 @@ The following image shows the web application's appearance and functionality:
 The following images demonstrate the application functionality:
 ![Webpage shows blank weather dashboard.](./Assets/images/weather_dashboard0.png)
 
-When user opens up the page, user can see search bar on the left side of the page. User can input city's name in the search bar to get info of that city's weather forecast. (Today's and future 5 days' weathers)
+When the user opens up the page, user can see search bar on the left side of the page. User can input city's name in the search bar to get info of that city's weather forecast. (Inculding today's and future 5 days' weathers)
 
 ![Displaying weather of the searched city and searched city shows up on left side of page.](./Assets/images/weather_dashboard1.png)
 
@@ -55,7 +55,7 @@ Also under the search bar, the list of searched city histories will be displayed
 
 ![Deleting searched history.](./Assets/images/delete_history.png)
 
-User can also delete their searched city history by clicking 'X' button next searched city name. 
+User can also delete their searched city history by clicking 'X' button next to the searched city name. 
 
 ![Webpage shows no result has been found.](./Assets/images/no_result.png)
 
@@ -66,7 +66,7 @@ If the user searched for invalid city name, or if the weather api could not fetc
 
 ## How to use
 
- * User can check today's date and 5 days forecast by seraching city name from search bar on the left side of the webpage. Search function is not uppercase/lowercase sensitive, but user must input correct and precise city name. 
+ * User can check today's date and 5 days forecast by seraching city name from search bar on the left side of the webpage. Search function is not uppercase/lowercase sensitive, but user must input correct and precise city name. (ex: LA (x), Los Angeles (o))
 
  * Date shown in weather forecast is based on city's local timezone.  
 
@@ -83,6 +83,8 @@ If the user searched for invalid city name, or if the weather api could not fetc
 > * Code to move item in the array to end of the list: https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
 
 > * API used in this project (OpenWeatherMAp): https://openweathermap.org/forecast5
+
+> * Stylesheet used for this project(jass.css): normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css, https://github.com/necolas/normalize.css/blob/master/normalize.css
 
 - - -
 © 2022 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
